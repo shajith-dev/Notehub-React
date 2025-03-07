@@ -38,7 +38,10 @@ export default function NoteRequestForm() {
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-4">
           <div>
-            <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="title"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Title
             </label>
             <input
@@ -54,7 +57,10 @@ export default function NoteRequestForm() {
           </div>
 
           <div>
-            <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="subject"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Subject
             </label>
             <select
@@ -64,7 +70,9 @@ export default function NoteRequestForm() {
               value={subjectId}
               onChange={(e) => setSubjectId(parseInt(e.target.value))}
             >
-              <option value={0} disabled>Select a subject</option>
+              <option value={0} disabled>
+                Select a subject
+              </option>
               {data &&
                 data.map((subject: Subject) => (
                   <option key={subject.subjectId} value={subject.subjectId}>
@@ -75,7 +83,10 @@ export default function NoteRequestForm() {
           </div>
 
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Description
             </label>
             <textarea

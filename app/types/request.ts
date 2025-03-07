@@ -5,4 +5,4 @@ export interface Request {
   author: string;
   status: "open" | "closed";
   createdAt: string;
-} 
+}

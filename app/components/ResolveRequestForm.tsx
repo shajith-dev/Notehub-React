@@ -54,8 +54,8 @@ export default function ResolveRequestForm({
     try {
       // Here you would typically send the data to your backend
       console.log({ requestId, title, file });
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+
       // Reset form
       setTitle("");
       setFile(null);
@@ -79,7 +79,10 @@ export default function ResolveRequestForm({
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="space-y-4">
           <div>
-            <label htmlFor="response" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="response"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Title
             </label>
             <input
@@ -94,7 +97,10 @@ export default function ResolveRequestForm({
           </div>
 
           <div>
-            <label htmlFor="file-upload" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="file-upload"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Upload PDF Note
             </label>
             <div

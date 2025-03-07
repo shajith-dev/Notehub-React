@@ -26,13 +26,23 @@ export default function NotePage({ noteId }: { noteId: number }) {
     }
   }, [data]);
 
-  const TabButton = ({ tab, label, icon: Icon }: { tab: Tab; label: string; icon: any }) => (
+  const TabButton = ({
+    tab,
+    label,
+    icon: Icon,
+  }: {
+    tab: Tab;
+    label: string;
+    icon: any;
+  }) => (
     <button
       onClick={() => setActiveTab(tab)}
       className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-all duration-200
-        ${activeTab === tab 
-          ? "text-accent border-b-2 border-accent bg-accent/5" 
-          : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"}`}
+        ${
+          activeTab === tab
+            ? "text-accent border-b-2 border-accent bg-accent/5"
+            : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+        }`}
     >
       <Icon className="h-4 w-4" />
       {label}
@@ -57,14 +67,10 @@ export default function NotePage({ noteId }: { noteId: number }) {
               <div className="w-full lg:w-1/3 flex flex-col h-[calc(100vh-12rem)]">
                 {/* Mobile Tabs */}
                 <div className="lg:hidden flex border-b border-gray-200 bg-white rounded-t-lg">
-                  <TabButton 
-                    tab="chat" 
-                    label="Chat" 
-                    icon={MessageCircle}
-                  />
-                  <TabButton 
-                    tab="comments" 
-                    label="Comments" 
+                  <TabButton tab="chat" label="Chat" icon={MessageCircle} />
+                  <TabButton
+                    tab="comments"
+                    label="Comments"
                     icon={MessageSquare}
                   />
                 </div>
@@ -78,18 +84,22 @@ export default function NotePage({ noteId }: { noteId: number }) {
 
                   {/* Mobile View - Show based on active tab */}
                   <div className="lg:hidden h-full">
-                    <div className={`h-full transition-all duration-300 transform ${
-                      activeTab === 'chat' 
-                        ? 'translate-x-0 opacity-100' 
-                        : 'translate-x-full opacity-0 hidden'
-                    }`}>
+                    <div
+                      className={`h-full transition-all duration-300 transform ${
+                        activeTab === "chat"
+                          ? "translate-x-0 opacity-100"
+                          : "translate-x-full opacity-0 hidden"
+                      }`}
+                    >
                       <ChatComponent noteId={noteId} noteUrl={note?.url} />
                     </div>
-                    <div className={`h-full flex flex-col transition-all duration-300 transform ${
-                      activeTab === 'comments' 
-                        ? 'translate-x-0 opacity-100' 
-                        : '-translate-x-full opacity-0 hidden'
-                    }`}>
+                    <div
+                      className={`h-full flex flex-col transition-all duration-300 transform ${
+                        activeTab === "comments"
+                          ? "translate-x-0 opacity-100"
+                          : "-translate-x-full opacity-0 hidden"
+                      }`}
+                    >
                       <div className="flex-1 overflow-y-auto">
                         <CommentSection noteId={noteId} />
                       </div>

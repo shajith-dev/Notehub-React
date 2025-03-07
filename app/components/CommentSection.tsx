@@ -1,7 +1,14 @@
 "use client";
 
 import React, { useState, memo, useRef } from "react";
-import { User, MoreVertical, Send, MessageSquare, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  User,
+  MoreVertical,
+  Send,
+  MessageSquare,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Comment } from "@/types/comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getComments, addComment } from "@/app/api/comment";
@@ -32,7 +39,9 @@ const CommentComponent = memo(function CommentComponent({
       </div>
       <div className="flex-grow min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <h3 className="text-sm font-medium text-gray-900">{comment.author}</h3>
+          <h3 className="text-sm font-medium text-gray-900">
+            {comment.author}
+          </h3>
           <span className="text-xs text-gray-400">•</span>
           <span className="text-xs text-gray-500">
             {comment.createdAt || "Just now"}
@@ -195,7 +204,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
       <div className="flex-shrink-0 border-t border-gray-100 p-4 bg-white">
         <div className="flex justify-between items-center">
           <button
-            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage <= 1}
             className="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
           >
@@ -206,7 +215,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
             Page {currentPage} of {totalPages}
           </span>
           <button
-            onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage >= totalPages}
             className="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
           >

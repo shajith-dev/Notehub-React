@@ -69,7 +69,10 @@ export default function SignUpForm() {
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="userName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="userName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Username
               </label>
               <input
@@ -83,7 +86,10 @@ export default function SignUpForm() {
               />
             </div>
             <div>
-              <label htmlFor="emailId" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="emailId"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Email address
               </label>
               <input
@@ -97,7 +103,10 @@ export default function SignUpForm() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password
               </label>
               <input

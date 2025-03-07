@@ -13,4 +13,4 @@ export interface Note {
   author?: string;
   createdBy: number;
   url?: string;
-} 
+}

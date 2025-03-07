@@ -1,7 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { SearchIcon, ChevronLeft, ChevronRight, Book, Calendar, User } from "lucide-react";
+import {
+  SearchIcon,
+  ChevronLeft,
+  ChevronRight,
+  Book,
+  Calendar,
+  User,
+} from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { searchNotes } from "@/app/api/note";
 import { PagedResult } from "@/types/common";
@@ -12,7 +19,7 @@ import { useDebounce } from "../hooks/useDebounce";
 export default function SearchComponent() {
   const [searchTerm, setSearchTerm] = useState("");
   const [pageNo, setPageNo] = useState<number>(0);
-  
+
   // Debounce search term for 300ms
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
@@ -64,10 +71,10 @@ export default function SearchComponent() {
           </p>
         ) : data && data.results.length > 0 ? (
           <div className="space-y-3">
-            {data.results.map((note : Note) => (
-              <Link 
-                href={`/notes/${note.noteId}`} 
-                key={note.noteId} 
+            {data.results.map((note: Note) => (
+              <Link
+                href={`/notes/${note.noteId}`}
+                key={note.noteId}
                 className="block group"
               >
                 <div className="bg-white px-4 py-3 rounded-md shadow-sm border border-gray-100 transition-all duration-200 ease-in-out hover:shadow-md hover:border-accent/20 group-hover:transform group-hover:scale-[1.01]">
@@ -103,7 +110,7 @@ export default function SearchComponent() {
             Previous
           </button>
           <span className="text-sm text-gray-600">
-            Page {pageNo + 1} {data.hasMore ? '' : 'of ' + (pageNo + 1)}
+            Page {pageNo + 1} {data.hasMore ? "" : "of " + (pageNo + 1)}
           </span>
           <button
             onClick={() => setPageNo(pageNo + 1)}

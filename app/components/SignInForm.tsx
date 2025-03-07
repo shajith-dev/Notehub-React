@@ -70,7 +70,10 @@ export default function SignInForm() {
         <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
-              <label htmlFor="userName" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="userName"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Username
               </label>
               <input
@@ -85,7 +88,10 @@ export default function SignInForm() {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Password
               </label>
               <input
@@ -110,12 +116,18 @@ export default function SignInForm() {
                 type="checkbox"
                 className="h-4 w-4 text-accent focus:ring-accent border-gray-300 rounded"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+              <label
+                htmlFor="remember-me"
+                className="ml-2 block text-sm text-gray-700"
+              >
                 Remember me
               </label>
             </div>
             <div className="text-sm">
-              <a href="#" className="font-medium text-accent hover:text-accent/90">
+              <a
+                href="#"
+                className="font-medium text-accent hover:text-accent/90"
+              >
                 Forgot password?
               </a>
             </div>

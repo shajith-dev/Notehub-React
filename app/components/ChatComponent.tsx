@@ -10,11 +10,18 @@ interface Message {
   sender: "user" | "assistant";
 }
 
-export default function ChatComponent({ noteId, noteUrl }: { noteId: number, noteUrl?: string }) {
+export default function ChatComponent({
+  noteId,
+  noteUrl,
+}: {
+  noteId: number;
+  noteUrl?: string;
+}) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
-      content: "Hello! I'm your AI assistant. I can help you understand the content of your notes and answer any questions you might have.",
+      content:
+        "Hello! I'm your AI assistant. I can help you understand the content of your notes and answer any questions you might have.",
       sender: "assistant",
     },
     {
@@ -24,19 +31,22 @@ export default function ChatComponent({ noteId, noteUrl }: { noteId: number, not
     },
     {
       id: "3",
-      content: "Of course! I've analyzed the note and here are the key points:\n\n1. The document discusses important concepts in modern web development\n2. It covers React best practices and component architecture\n3. There's a section about state management and data flow\n\nWhat specific aspect would you like to explore further?",
+      content:
+        "Of course! I've analyzed the note and here are the key points:\n\n1. The document discusses important concepts in modern web development\n2. It covers React best practices and component architecture\n3. There's a section about state management and data flow\n\nWhat specific aspect would you like to explore further?",
       sender: "assistant",
     },
     {
       id: "4",
-      content: "That's helpful! Could you explain more about the state management part?",
+      content:
+        "That's helpful! Could you explain more about the state management part?",
       sender: "user",
     },
     {
       id: "5",
-      content: "The note explains several approaches to state management:\n\n• Local state using useState hooks\n• Global state with Context API\n• External state management with libraries\n\nWould you like me to elaborate on any of these approaches?",
+      content:
+        "The note explains several approaches to state management:\n\n• Local state using useState hooks\n• Global state with Context API\n• External state management with libraries\n\nWould you like me to elaborate on any of these approaches?",
       sender: "assistant",
-    }
+    },
   ]);
 
   const [newMessage, setNewMessage] = useState("");
@@ -45,7 +55,10 @@ export default function ChatComponent({ noteId, noteUrl }: { noteId: number, not
   const user = useAuthStore((state) => state.user);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+    });
   };
 
   useEffect(() => {
@@ -71,7 +84,8 @@ export default function ChatComponent({ noteId, noteUrl }: { noteId: number, not
     setTimeout(() => {
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
-        content: "This is a simulated response. Replace this with actual API integration.",
+        content:
+          "This is a simulated response. Replace this with actual API integration.",
         sender: "assistant",
       };
       setMessages((prev) => [...prev, assistantMessage]);
@@ -100,9 +114,11 @@ export default function ChatComponent({ noteId, noteUrl }: { noteId: number, not
           >
             {/* Avatar */}
             <div className="flex-shrink-0">
-              <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                message.sender === "user" ? "bg-accent/10" : "bg-emerald-100"
-              }`}>
+              <div
+                className={`h-8 w-8 rounded-full flex items-center justify-center ${
+                  message.sender === "user" ? "bg-accent/10" : "bg-emerald-100"
+                }`}
+              >
                 {message.sender === "user" ? (
                   <User className="h-5 w-5 text-accent" />
                 ) : (
@@ -141,7 +157,7 @@ export default function ChatComponent({ noteId, noteUrl }: { noteId: number, not
             </div>
           </div>
         )}
-        
+
         <div ref={messagesEndRef} />
       </div>
 
@@ -174,4 +190,4 @@ export default function ChatComponent({ noteId, noteUrl }: { noteId: number, not
       </div>
     </div>
   );
-} 
+}

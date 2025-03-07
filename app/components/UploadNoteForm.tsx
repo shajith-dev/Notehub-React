@@ -56,8 +56,8 @@ export default function UploadNoteForm() {
     try {
       // Here you would typically upload the file and create the note
       console.log({ title, description, subjectId, file });
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
+
       // Reset form
       setTitle("");
       setDescription("");
@@ -76,14 +76,18 @@ export default function UploadNoteForm() {
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-gray-900">Upload a Note</h2>
           <p className="mt-1 text-sm text-gray-500">
-            Share your notes with the community. Please ensure your notes are clear and helpful.
+            Share your notes with the community. Please ensure your notes are
+            clear and helpful.
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-4">
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Title
               </label>
               <input
@@ -98,7 +102,10 @@ export default function UploadNoteForm() {
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="subject"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Subject
               </label>
               <select
@@ -108,7 +115,9 @@ export default function UploadNoteForm() {
                 value={subjectId}
                 onChange={(e) => setSubjectId(parseInt(e.target.value))}
               >
-                <option value={0} disabled>Select a subject</option>
+                <option value={0} disabled>
+                  Select a subject
+                </option>
                 {subjects.map((subject) => (
                   <option key={subject.subjectId} value={subject.subjectId}>
                     {subject.name}
@@ -118,7 +127,10 @@ export default function UploadNoteForm() {
             </div>
 
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
+              <label
+                htmlFor="description"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
                 Description
               </label>
               <textarea
@@ -189,7 +201,9 @@ export default function UploadNoteForm() {
           <div className="pt-2">
             <button
               type="submit"
-              disabled={isLoading || !title || !description || !file || subjectId === 0}
+              disabled={
+                isLoading || !title || !description || !file || subjectId === 0
+              }
               className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Uploading..." : "Upload Note"}
