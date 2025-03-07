@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
-import { useStore } from "@/stores/store";
+import { useAuthStore, useStore } from "@/stores/store";
 import { Subject } from "@/types/note";
+import { useMutation } from "@tanstack/react-query";
+import { uploadNote } from "../api/note";
 
 export default function UploadNoteForm() {
   const [title, setTitle] = useState("");
@@ -12,7 +14,7 @@ export default function UploadNoteForm() {
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
-
+  const user = useAuthStore((state) => state.user);
   const subjects: Subject[] = useStore((state) => state.subjects);
 
   const handleDrag = (e: React.DragEvent) => {
@@ -48,6 +50,13 @@ export default function UploadNoteForm() {
     setFile(null);
   };
 
+  const mutation = useMutation({
+    mutationFn: uploadNote,
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) return;
@@ -55,9 +64,16 @@ export default function UploadNoteForm() {
     setIsLoading(true);
     try {
       // Here you would typically upload the file and create the note
-      console.log({ title, description, subjectId, file });
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-
+      const formData = new FormData();
+      formData.set("file", file);
+      const note  = {
+        title,
+        description,
+        subjectId,
+        createdBy: user?.userId,
+      }
+      formData.set("note", JSON.stringify(note));
+      mutation.mutate(formData);
       // Reset form
       setTitle("");
       setDescription("");

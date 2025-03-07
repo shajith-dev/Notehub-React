@@ -3,50 +3,24 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Send, User, Bot } from "lucide-react";
 import { useAuthStore } from "@/stores/store";
-
-interface Message {
-  id: string;
-  content: string;
-  sender: "user" | "assistant";
-}
+import { Message } from "@/types/chat";
+import { getChatResponse } from "../api/chat";
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ChatComponent({
   noteId,
   noteUrl,
 }: {
   noteId: number;
-  noteUrl?: string;
+  noteUrl: string;
 }) {
   const [messages, setMessages] = useState<Message[]>([
     {
-      id: "1",
+      id: uuidv4(),
       content:
         "Hello! I'm your AI assistant. I can help you understand the content of your notes and answer any questions you might have.",
-      sender: "assistant",
-    },
-    {
-      id: "2",
-      content: "Hi! Can you help me understand the main concepts in this note?",
-      sender: "user",
-    },
-    {
-      id: "3",
-      content:
-        "Of course! I've analyzed the note and here are the key points:\n\n1. The document discusses important concepts in modern web development\n2. It covers React best practices and component architecture\n3. There's a section about state management and data flow\n\nWhat specific aspect would you like to explore further?",
-      sender: "assistant",
-    },
-    {
-      id: "4",
-      content:
-        "That's helpful! Could you explain more about the state management part?",
-      sender: "user",
-    },
-    {
-      id: "5",
-      content:
-        "The note explains several approaches to state management:\n\n• Local state using useState hooks\n• Global state with Context API\n• External state management with libraries\n\nWould you like me to elaborate on any of these approaches?",
-      sender: "assistant",
-    },
+      role: "assistant"
+    }
   ]);
 
   const [newMessage, setNewMessage] = useState("");
@@ -62,6 +36,13 @@ export default function ChatComponent({
   };
 
   useEffect(() => {
+    const storedMessages = sessionStorage.getItem(`${user?.userId}_${noteId}`);
+    if (storedMessages) {
+      setMessages(JSON.parse(storedMessages));
+    }
+  }, []);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
@@ -71,26 +52,32 @@ export default function ChatComponent({
 
     // Add user message
     const userMessage: Message = {
-      id: Date.now().toString(),
+      id: uuidv4(),
       content: newMessage,
-      sender: "user",
+      role: "user",
     };
-
-    setMessages((prev) => [...prev, userMessage]);
-    setNewMessage("");
-    setIsLoading(true);
-
-    // Simulate API call delay
-    setTimeout(() => {
-      const assistantMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        content:
-          "This is a simulated response. Replace this with actual API integration.",
-        sender: "assistant",
-      };
+    try{
+      setMessages((prev) => [...prev, userMessage]);
+      setNewMessage("");
+      setIsLoading(true);
+      const assistantMessage = await getChatResponse(newMessage, noteUrl);
       setMessages((prev) => [...prev, assistantMessage]);
       setIsLoading(false);
-    }, 1000);
+      sessionStorage.setItem(`${user?.userId}_${noteId}`, JSON.stringify([...messages, userMessage, assistantMessage]));
+    } catch (error) {
+      console.error("Error fetching chat response:", error);
+      setMessages((prev) => [...prev, {
+        id: uuidv4(),
+        content: "An error occurred while fetching the chat response. Please try again later.",
+        role: "assistant"
+      }]);
+      setIsLoading(false);
+      sessionStorage.setItem(`${user?.userId}_${noteId}`, JSON.stringify([...messages, userMessage, {
+        id: uuidv4(),
+        content: "An error occurred while fetching the chat response. Please try again later.",
+        role: "assistant"
+      }]));
+    }
   };
 
   return (
@@ -109,18 +96,18 @@ export default function ChatComponent({
           <div
             key={message.id}
             className={`flex items-start gap-3 ${
-              message.sender === "user" ? "flex-row-reverse" : ""
+              message.role === "user" ? "flex-row-reverse" : ""
             }`}
           >
             {/* Avatar */}
             <div className="flex-shrink-0">
               <div
                 className={`h-8 w-8 rounded-full flex items-center justify-center ${
-                  message.sender === "user" ? "bg-accent/10" : "bg-emerald-100"
+                  message.role === "user" ? "bg-accent/10" : "bg-emerald-100"
                 }`}
               >
-                {message.sender === "user" ? (
-                  <User className="h-5 w-5 text-accent" />
+                {message.role === "user" ? (
+                  <User className="h-5 w-5 text-accent"/>
                 ) : (
                   <Bot className="h-5 w-5 text-emerald-600" />
                 )}
@@ -130,12 +117,12 @@ export default function ChatComponent({
             {/* Message Bubble */}
             <div
               className={`flex flex-col max-w-[80%] ${
-                message.sender === "user" ? "items-end" : "items-start"
+                message.role === "user" ? "items-end" : "items-start"
               }`}
             >
               <div
                 className={`px-4 py-2 rounded-2xl ${
-                  message.sender === "user"
+                  message.role === "user"
                     ? "bg-accent text-white"
                     : "bg-gray-100 text-gray-900"
                 }`}
