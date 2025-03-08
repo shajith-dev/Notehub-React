@@ -1,8 +1,12 @@
 "use client";
 
-import { useStore } from "@/stores/store";
 import { Subject } from "@/types/note";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { getSubjects } from "../api/note";
+import { Request } from "../types/request";
+import { createRequest } from "../api/request";
+import { useAuthStore } from "@/stores/store";
 
 export default function NoteRequestForm() {
   const [title, setTitle] = useState("");
@@ -10,15 +14,28 @@ export default function NoteRequestForm() {
   const [subjectId, setSubjectId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
-  const data: Subject[] = useStore((state) => state.subjects);
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["subjects"],
+    queryFn: getSubjects,
+  });
+
+  const user = useAuthStore((state) => state.user);
+
+  const mutation = useMutation({
+    mutationFn: createRequest,
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // Here you would typically send the data to your backend
-    console.log({ title, description, subjectId });
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const request: Request = {
+      title,
+      description,
+      subjectId,
+      resolved: false,
+      requestedBy: user?.userId,
+    };
+    mutation.mutate(request);
     setIsLoading(false);
     // Reset form after submission
     setTitle("");
@@ -73,8 +90,8 @@ export default function NoteRequestForm() {
               <option value={0} disabled>
                 Select a subject
               </option>
-              {data &&
-                data.map((subject: Subject) => (
+              {subjects &&
+                subjects.map((subject: Subject) => (
                   <option key={subject.subjectId} value={subject.subjectId}>
                     {subject.name}
                   </option>

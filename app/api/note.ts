@@ -20,7 +20,7 @@ export const uploadNote = async (formData: FormData): Promise<void> => {
 export const searchNotes = async (
   query: string,
   page?: number,
-  sids?: string[],
+  sids?: number[],
 ): Promise<PagedResult<Note>> => {
   const response = await axios.get(
     `/api/notes/search?q=${query}&sids=${sids || ""}&page=${page || 0}`,
@@ -30,5 +30,15 @@ export const searchNotes = async (
 
 export const getNote = async (noteId: number): Promise<Note> => {
   const response = await axios.get(`api/notes/${noteId}`);
+  return response.data;
+};
+
+export const getUserNotes = async (page: number = 0): Promise<PagedResult<Note>> => {
+  const response = await axios.get(`/api/notes/me?page=${page}`);
+  return response.data;
+};
+
+export const deleteNote = async (noteId: number): Promise<void> => {
+  const response = await axios.delete(`/api/notes/${noteId}`);
   return response.data;
 };

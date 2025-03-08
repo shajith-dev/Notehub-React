@@ -1,8 +1,11 @@
 export interface Request {
-  requestId: number;
-  subject: string;
+  requestId?: number;
+  subjectId: number;
+  title : string;
+  author?: string;
+  resolved:boolean;
+  createdAt?: string;
   description: string;
-  author: string;
-  status: "open" | "closed";
-  createdAt: string;
+  authorId?: number;
+  requestedBy?: number;
 }

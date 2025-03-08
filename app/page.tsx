@@ -1,23 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useQuery } from "@tanstack/react-query";
-import { getSubjects } from "@/app/api/note";
-import { useAuthStore, useStore } from "@/stores/store";
 
 export default function LandingPage() {
-  const user = useAuthStore((state) => state.user);
-
-  if (user) {
-    const setSubjects = useStore((state) => state.setSubjects);
-
-    const { data } = useQuery({
-      queryKey: ["subjects"],
-      queryFn: getSubjects,
-    });
-
-    setSubjects(data || []);
-  }
 
   return (
     <div className="min-h-screen bg-gray-50">

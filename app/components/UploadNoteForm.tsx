@@ -3,19 +3,18 @@
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
 import { useAuthStore, useStore } from "@/stores/store";
-import { Subject } from "@/types/note";
-import { useMutation } from "@tanstack/react-query";
-import { uploadNote } from "../api/note";
-
+import { Note, Subject } from "@/types/note";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getSubjects, uploadNote } from "../api/note";
+import { useRouter } from "next/navigation";
 export default function UploadNoteForm() {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [subjectId, setSubjectId] = useState(0);
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
   const user = useAuthStore((state) => state.user);
-  const subjects: Subject[] = useStore((state) => state.subjects);
+  const router = useRouter();
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -53,8 +52,14 @@ export default function UploadNoteForm() {
   const mutation = useMutation({
     mutationFn: uploadNote,
     onSuccess: (data) => {
-      console.log(data);
+      const note = data as unknown as Note;
+      router.push(`/notes/${note.noteId}`);
     },
+  });
+
+  const { data: subjects = [] } = useQuery<Subject[]>({
+    queryKey: ["subjects"],
+    queryFn: getSubjects,
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -68,7 +73,6 @@ export default function UploadNoteForm() {
       formData.set("file", file);
       const note  = {
         title,
-        description,
         subjectId,
         createdBy: user?.userId,
       }
@@ -76,7 +80,6 @@ export default function UploadNoteForm() {
       mutation.mutate(formData);
       // Reset form
       setTitle("");
-      setDescription("");
       setSubjectId(0);
       setFile(null);
     } catch (error) {
@@ -141,25 +144,6 @@ export default function UploadNoteForm() {
                 ))}
               </select>
             </div>
-
-            <div>
-              <label
-                htmlFor="description"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Description
-              </label>
-              <textarea
-                id="description"
-                required
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={3}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
-                placeholder="Describe what these notes cover"
-              />
-            </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Upload PDF
@@ -218,7 +202,7 @@ export default function UploadNoteForm() {
             <button
               type="submit"
               disabled={
-                isLoading || !title || !description || !file || subjectId === 0
+                isLoading || !title || !file || subjectId === 0
               }
               className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
             >

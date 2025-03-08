@@ -4,6 +4,8 @@ export type Note = {
   subjectId: number;
   noteId?: number;
   url?: string;
+  author?: string;
+  subjectName?: string;
   description?: string;
 };
 

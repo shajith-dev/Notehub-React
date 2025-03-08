@@ -2,18 +2,25 @@
 
 import { useState } from "react";
 import { Upload, X } from "lucide-react";
+import { useAuthStore } from "@/stores/store";
+import { useMutation } from "@tanstack/react-query";
+import { resolveRequest } from "../api/request";
 
 export default function ResolveRequestForm({
   requestId,
+  subjectId,
   onSuccess,
 }: {
   requestId: number;
+  subjectId: number;
   onSuccess?: () => void;
 }) {
   const [title, setTitle] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
+  const [description, setDescription] = useState("");
+  const user = useAuthStore((state) => state.user);
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault();
@@ -48,18 +55,32 @@ export default function ResolveRequestForm({
     setFile(null);
   };
 
+  const mutation = useMutation({
+    mutationFn: (formData: FormData) => resolveRequest(requestId, formData),
+    onSuccess: () => {
+      window.location.reload();
+    },
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!file){
+      return;
+    }
     setIsLoading(true);
     try {
-      // Here you would typically send the data to your backend
-      console.log({ requestId, title, file });
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API call
-
-      // Reset form
+      const formData = new FormData();
+      formData.set("file", file);
+      const note  = {
+        title,
+        subjectId,
+        createdBy: user?.userId,
+      }
+      formData.set("noteJson", JSON.stringify(note));
+      mutation.mutate(formData);
       setTitle("");
       setFile(null);
-      onSuccess?.(); // Call onSuccess if provided
+      onSuccess?.();
     } catch (error) {
       console.error("Error resolving request:", error);
     } finally {
@@ -95,7 +116,21 @@ export default function ResolveRequestForm({
               placeholder="Enter a title for your note"
             />
           </div>
-
+          <div>
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Description
+            </label>
+            <textarea
+              id="description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
+              placeholder="Enter a description for your note"
+            />
+          </div>
           <div>
             <label
               htmlFor="file-upload"

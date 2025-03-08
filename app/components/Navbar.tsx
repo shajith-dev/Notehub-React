@@ -93,11 +93,7 @@ export default function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <button className="focus:outline-none">
                       <Avatar>
-                        <AvatarImage
-                          src="https://github.com/shadcn.png"
-                          alt="@shadcn"
-                        />
-                        <AvatarFallback>CN</AvatarFallback>
+                        <AvatarFallback>{user.userName.substring(0, 2).toUpperCase()}</AvatarFallback>
                       </Avatar>
                     </button>
                   </DropdownMenuTrigger>

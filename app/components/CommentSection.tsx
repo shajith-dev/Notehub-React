@@ -3,16 +3,27 @@
 import React, { useState, memo, useRef } from "react";
 import {
   User,
-  MoreVertical,
   Send,
   MessageSquare,
   ChevronLeft,
   ChevronRight,
+  Trash2,
+  AlertTriangle,
 } from "lucide-react";
 import { Comment } from "@/types/comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getComments, addComment } from "@/app/api/comment";
+import { getComments, addComment, deleteComment } from "@/app/api/comment";
 import { useAuthStore } from "@/stores/store";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 // Memoized Comment Component
 const CommentComponent = memo(function CommentComponent({
@@ -20,12 +31,17 @@ const CommentComponent = memo(function CommentComponent({
   commentRef,
   setParentId,
   isReply = false,
+  onDeleteClick,
 }: {
   comment: Comment;
   commentRef: React.RefObject<HTMLTextAreaElement>;
   setParentId: React.Dispatch<React.SetStateAction<number | undefined>>;
   isReply?: boolean;
+  onDeleteClick: (commentId: number) => void;
 }) {
+  const user = useAuthStore((store) => store.user);
+  const isAuthor = user?.userId === comment.createdBy || user?.userName === comment.author;
+
   return (
     <div
       className={`group flex gap-3 ${
@@ -65,9 +81,15 @@ const CommentComponent = memo(function CommentComponent({
           </div>
         )}
       </div>
-      <button className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-gray-400 hover:text-gray-600">
-        <MoreVertical className="h-4 w-4" />
-      </button>
+      {isAuthor && (
+        <button 
+          onClick={() => onDeleteClick(comment.commentId!)}
+          className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 w-6 h-6 flex items-center justify-center"
+          title="Delete comment"
+        >
+          <Trash2 className="h-4 w-4" />
+        </button>
+      )}
     </div>
   );
 });
@@ -80,6 +102,10 @@ export default function CommentSection({ noteId }: { noteId: number }) {
   const [parentId, setParentId] = useState<number | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
+  
+  // Delete confirmation state
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
 
   const { data: comments = [] } = useQuery({
     queryKey: ["comment", noteId],
@@ -101,63 +127,80 @@ export default function CommentSection({ noteId }: { noteId: number }) {
     },
   });
 
+  // Delete comment mutation
+  const deleteMutation = useMutation({
+    mutationFn: (commentId: number) => deleteComment(noteId, commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["comment", noteId] });
+      setIsDeleteDialogOpen(false);
+      setCommentToDelete(null);
+    },
+  });
+
   const handleAddComment = () => {
+    if (!newComment.trim() || !user) return;
+
     const comment: Comment = {
-      createdBy: user?.userId!,
-      content: newComment,
       noteId,
+      content: newComment,
+      author: user.userName,
+      createdBy: user.userId,
       parentId,
     };
+
     mutation.mutate(comment);
   };
 
+  const handleDeleteClick = (commentId: number) => {
+    setCommentToDelete(commentId);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (commentToDelete) {
+      deleteMutation.mutate(commentToDelete);
+    }
+  };
+
   return (
-    <div className="flex flex-col min-h-0">
-      {/* Header */}
-      <div className="flex-shrink-0 p-4 border-b border-gray-100">
-        <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+      <div className="p-4 sm:p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
           <MessageSquare className="h-5 w-5 text-accent" />
           Comments
         </h2>
-      </div>
 
-      {/* Comments List */}
-      <div className="flex-1 overflow-y-auto p-4">
-        {/* Add Comment Form */}
+        {/* Comments List */}
         <div className="mb-6">
-          <div className="flex gap-3">
-            <div className="flex-shrink-0">
-              <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center">
-                <User className="h-5 w-5 text-accent" />
-              </div>
-            </div>
-            <div className="flex-grow relative">
-              {parentId && (
-                <div className="flex items-center gap-2 mb-2 px-1">
-                  <button
-                    onClick={() => setParentId(undefined)}
-                    className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full transition-colors"
-                  >
-                    <span className="text-accent">×</span>
-                    Cancel reply
-                  </button>
+          {/* Add Comment Form */}
+          <div className="mb-6">
+            <div className="flex gap-3">
+              <div className="flex-shrink-0">
+                <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center overflow-hidden">
+                  <User className="h-5 w-5 text-accent" />
                 </div>
-              )}
-              <textarea
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder={parentId ? "Write a reply..." : "Add a comment..."}
-                className="w-full px-3 py-2 bg-gray-50 border-none rounded-lg focus:ring-1 focus:ring-accent text-sm resize-none min-h-[80px]"
-                rows={3}
-                ref={commentTextAreaRef}
-              />
-              <button
-                onClick={() => handleAddComment()}
-                disabled={!newComment.trim()}
-                className="absolute bottom-2 right-2 bg-accent text-white p-1.5 rounded-full hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                <Send className="h-4 w-4" />
-              </button>
+              </div>
+              <div className="flex-grow relative">
+                <textarea
+                  placeholder={
+                    parentId
+                      ? "Write a reply..."
+                      : "Add a comment..."
+                  }
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  className="w-full px-3 py-2 bg-gray-50 border-none rounded-lg focus:ring-1 focus:ring-accent text-sm resize-none min-h-[80px]"
+                  rows={3}
+                  ref={commentTextAreaRef}
+                />
+                <button
+                  onClick={() => handleAddComment()}
+                  disabled={!newComment.trim()}
+                  className="absolute bottom-2 right-2 bg-accent text-white p-1.5 rounded-full hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                >
+                  <Send className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -179,6 +222,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
                     comment={comment}
                     commentRef={commentTextAreaRef}
                     setParentId={setParentId}
+                    onDeleteClick={handleDeleteClick}
                   />
                   {comment.replies && comment.replies.length > 0 && (
                     <div className="space-y-1">
@@ -189,6 +233,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
                           commentRef={commentTextAreaRef}
                           setParentId={setParentId}
                           isReply
+                          onDeleteClick={handleDeleteClick}
                         />
                       ))}
                     </div>
@@ -198,32 +243,58 @@ export default function CommentSection({ noteId }: { noteId: number }) {
             </div>
           )}
         </div>
+
+        {/* Pagination */}
+        {comments.length > itemsPerPage && (
+          <div className="flex justify-center mt-6">
+            <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg">
+              <button
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+                className="p-1 text-gray-500 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-500"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <span className="text-xs text-gray-500">
+                {currentPage} / {totalPages}
+              </span>
+              <button
+                onClick={() =>
+                  setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                }
+                disabled={currentPage === totalPages}
+                className="p-1 text-gray-500 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-500"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* Pagination - Now outside the scrollable area */}
-      <div className="flex-shrink-0 border-t border-gray-100 p-4 bg-white">
-        <div className="flex justify-between items-center">
-          <button
-            onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-            disabled={currentPage <= 1}
-            className="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
-          >
-            <ChevronLeft className="h-4 w-4" />
-            Previous
-          </button>
-          <span className="text-sm text-gray-600">
-            Page {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            disabled={currentPage >= totalPages}
-            className="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
-          >
-            Next
-            <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle className="flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+              Delete Comment
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete this comment? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteConfirm}
+              className="bg-red-500 hover:bg-red-600 text-white"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
