@@ -44,20 +44,20 @@ export default function NoteRequestForm() {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow border border-gray-100">
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-100 dark:border-gray-700">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900">Request a Note</h2>
-        <p className="mt-1 text-sm text-gray-500">
-          Fill in the details below to request a note from the community
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Request a Note</h2>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Fill out the form below to request a note from the community.
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Title
             </label>
@@ -68,41 +68,41 @@ export default function NoteRequestForm() {
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
-              placeholder="Enter a clear, descriptive title"
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-accent focus:border-accent text-gray-900 dark:text-white"
+              placeholder="Enter a title for your request"
             />
           </div>
 
           <div>
             <label
               htmlFor="subject"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Subject
             </label>
             <select
               id="subject"
+              name="subject"
               required
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm bg-white"
               value={subjectId}
-              onChange={(e) => setSubjectId(parseInt(e.target.value))}
+              onChange={(e) => setSubjectId(Number(e.target.value))}
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-accent focus:border-accent text-gray-900 dark:text-white"
             >
               <option value={0} disabled>
                 Select a subject
               </option>
-              {subjects &&
-                subjects.map((subject: Subject) => (
-                  <option key={subject.subjectId} value={subject.subjectId}>
-                    {subject.name}
-                  </option>
-                ))}
+              {subjects.map((subject) => (
+                <option key={subject.subjectId} value={subject.subjectId}>
+                  {subject.name}
+                </option>
+              ))}
             </select>
           </div>
 
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-700 mb-1"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
               Description
             </label>
@@ -113,23 +113,20 @@ export default function NoteRequestForm() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={4}
-              className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
-              placeholder="Describe what you're looking for in detail"
-            />
-            <p className="mt-1 text-xs text-gray-500">
-              Be specific about what you need help with
-            </p>
+              className="mt-1 block w-full px-3 py-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-accent focus:border-accent text-gray-900 dark:text-white"
+              placeholder="Describe what you're looking for"
+            ></textarea>
           </div>
-        </div>
 
-        <div className="pt-2">
-          <button
-            type="submit"
-            disabled={isLoading || !title || !description || subjectId === 0}
-            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {isLoading ? "Submitting..." : "Submit Request"}
-          </button>
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isLoading ? "Submitting..." : "Submit Request"}
+            </button>
+          </div>
         </div>
       </form>
     </div>

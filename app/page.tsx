@@ -4,34 +4,34 @@ import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <div className="bg-white">
+      <div className="bg-white dark:bg-gray-800">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+            <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white sm:text-5xl md:text-6xl">
               <span className="block">Welcome to</span>
               <span className="block text-accent">NoteHub</span>
             </h1>
-            <p className="mt-3 max-w-md mx-auto text-base text-gray-500 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
+            <p className="mt-3 max-w-md mx-auto text-base text-gray-500 dark:text-gray-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl">
               The ultimate platform for students to share, discover, and request
               study notes.
             </p>
             <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
               <div className="rounded-md shadow">
                 <Link
-                  href="/signup"
+                  href="/signin"
                   className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent hover:bg-accent/90 md:py-4 md:text-lg md:px-10"
                 >
-                  Get started
+                  Get Started
                 </Link>
               </div>
               <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
                 <Link
-                  href="/about"
-                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-accent bg-white hover:bg-gray-50 md:py-4 md:text-lg md:px-10"
+                  href="/search"
+                  className="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-accent bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 md:py-4 md:text-lg md:px-10"
                 >
-                  Learn more
+                  Browse Notes
                 </Link>
               </div>
             </div>
@@ -40,18 +40,17 @@ export default function LandingPage() {
       </div>
 
       {/* Feature Section */}
-      <div className="py-12 bg-white">
+      <div className="py-12 bg-gray-50 dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:text-center">
             <h2 className="text-base text-accent font-semibold tracking-wide uppercase">
               Features
             </h2>
-            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-              Everything you need to excel in your studies
+            <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+              Everything you need for better studying
             </p>
-            <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-              NoteHub provides a comprehensive platform for students to
-              collaborate and share knowledge.
+            <p className="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-300 lg:mx-auto">
+              NoteHub provides a comprehensive platform for all your study needs.
             </p>
           </div>
 
@@ -175,7 +174,7 @@ export default function LandingPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-accent">
+      <div className="bg-gray-700 dark:bg-gray-800">
         <div className="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
             <span className="block">Boost your academic performance.</span>
@@ -187,12 +186,19 @@ export default function LandingPage() {
           </p>
           <Link
             href="/signup"
-            className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-accent bg-white hover:bg-accent/90 hover:text-white sm:w-auto"
+            className="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-accent hover:bg-accent/90 sm:w-auto"
           >
             Sign up for free
           </Link>
         </div>
       </div>
+
+      {/* Footer - Smaller Version */}
+      <footer className="bg-white dark:bg-gray-800">
+        <div className="max-w-7xl mx-auto py-4 px-4 text-center text-xs text-gray-400 dark:text-gray-500">
+          &copy; 2023 NoteHub
+        </div>
+      </footer>
     </div>
   );
 }

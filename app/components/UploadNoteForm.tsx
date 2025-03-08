@@ -91,10 +91,10 @@ export default function UploadNoteForm() {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">Upload a Note</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Upload a Note</h2>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Share your notes with the community. Please ensure your notes are
             clear and helpful.
           </p>
@@ -105,7 +105,7 @@ export default function UploadNoteForm() {
             <div>
               <label
                 htmlFor="title"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Title
               </label>
@@ -115,7 +115,7 @@ export default function UploadNoteForm() {
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
+                className="appearance-none block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Give your note a clear title"
               />
             </div>
@@ -123,14 +123,14 @@ export default function UploadNoteForm() {
             <div>
               <label
                 htmlFor="subject"
-                className="block text-sm font-medium text-gray-700 mb-1"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
               >
                 Subject
               </label>
               <select
                 id="subject"
                 required
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm bg-white"
+                className="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 value={subjectId}
                 onChange={(e) => setSubjectId(parseInt(e.target.value))}
               >
@@ -145,13 +145,13 @@ export default function UploadNoteForm() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Upload PDF
               </label>
               <div
-                className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md relative ${
-                  dragActive ? "border-accent bg-accent/5" : ""
-                } transition-colors duration-150`}
+                className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md relative ${
+                  dragActive ? "border-accent bg-accent/5 dark:bg-accent/10" : ""
+                } transition-colors duration-150 dark:text-gray-300`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
                 onDragOver={handleDrag}
@@ -160,8 +160,8 @@ export default function UploadNoteForm() {
                 <div className="space-y-2 text-center">
                   {!file ? (
                     <>
-                      <Upload className="mx-auto h-10 w-10 text-gray-400" />
-                      <div className="flex text-sm text-gray-600">
+                      <Upload className="mx-auto h-10 w-10 text-gray-400 dark:text-gray-500" />
+                      <div className="flex text-sm text-gray-600 dark:text-gray-400">
                         <label
                           htmlFor="file-upload"
                           className="relative cursor-pointer rounded-md font-medium text-accent hover:text-accent/90 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-accent"
@@ -179,15 +179,15 @@ export default function UploadNoteForm() {
                         </label>
                         <p className="pl-1">or drag and drop</p>
                       </div>
-                      <p className="text-xs text-gray-500">PDF up to 10MB</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">PDF up to 10MB</p>
                     </>
                   ) : (
                     <div className="flex items-center justify-center space-x-2">
-                      <span className="text-sm text-gray-600">{file.name}</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">{file.name}</span>
                       <button
                         type="button"
                         onClick={removeFile}
-                        className="text-gray-400 hover:text-gray-500 focus:outline-none"
+                        className="text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400 focus:outline-none"
                       >
                         <X className="h-5 w-5" />
                       </button>

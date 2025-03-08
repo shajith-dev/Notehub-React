@@ -56,116 +56,131 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-sm border border-gray-100">
-        <div>
-          <h2 className="text-center text-2xl font-semibold text-gray-900">
-            Create your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-500">
-            Join NoteHub and start your learning journey
-          </p>
-        </div>
-        <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-            <div>
-              <label
-                htmlFor="userName"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Username
-              </label>
-              <input
-                id="userName"
-                name="userName"
-                type="text"
-                value={formData.userName}
-                onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
-                placeholder="Choose a username"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="emailId"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Email address
-              </label>
-              <input
-                id="emailId"
-                name="emailId"
-                type="email"
-                value={formData.emailId}
-                onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-accent focus:border-accent sm:text-sm"
-                placeholder="Create a password"
-              />
-            </div>
-          </div>
+    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
+      <div className="sm:mx-auto sm:w-full sm:max-w-md">
+        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+          Create your account
+        </h2>
+        <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+          Already have an account?{" "}
+          <Link
+            href="/signin"
+            className="font-medium text-accent hover:text-accent/90"
+          >
+            Sign in
+          </Link>
+        </p>
+      </div>
 
-          {Object.keys(errors).length > 0 && (
-            <div className="rounded-md bg-red-50 p-3">
-              <div className="flex">
-                <div className="ml-3">
-                  <div className="text-sm text-red-700">
-                    <ul className="list-disc pl-5 space-y-1">
-                      {Object.entries(errors).map(([key, value]) => (
-                        <li key={key}>{value}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-100 dark:border-gray-700">
+          {mutation.isError && (
+            <div className="mb-4 p-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-sm rounded-md">
+              {(mutation.error as Error).message || "Failed to sign up"}
             </div>
           )}
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-150 ease-in-out disabled:opacity-50"
-            >
-              {isLoading ? "Creating your account..." : "Create account"}
-            </button>
-          </div>
-        </form>
-        <div className="mt-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+          <form className="space-y-6" onSubmit={handleSubmit}>
+            <div>
+              <label
+                htmlFor="userName"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Username
+              </label>
+              <div className="mt-1">
+                <input
+                  id="userName"
+                  name="userName"
+                  type="text"
+                  autoComplete="username"
+                  required
+                  value={formData.userName}
+                  onChange={handleChange}
+                  className={`appearance-none block w-full px-3 py-2 border ${
+                    errors.userName
+                      ? "border-red-300 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-accent focus:border-accent"
+                  } rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm`}
+                />
+                {errors.userName && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                    {errors.userName}
+                  </p>
+                )}
+              </div>
             </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">
-                Already have an account?
-              </span>
+
+            <div>
+              <label
+                htmlFor="emailId"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Email address
+              </label>
+              <div className="mt-1">
+                <input
+                  id="emailId"
+                  name="emailId"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={formData.emailId}
+                  onChange={handleChange}
+                  className={`appearance-none block w-full px-3 py-2 border ${
+                    errors.emailId
+                      ? "border-red-300 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-accent focus:border-accent"
+                  } rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm`}
+                />
+                {errors.emailId && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                    {errors.emailId}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="mt-4">
-            <Link
-              href="/signin"
-              className="w-full inline-flex justify-center py-2.5 px-4 border border-gray-200 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition-colors duration-150"
-            >
-              Sign in
-            </Link>
-          </div>
+
+            <div>
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+              >
+                Password
+              </label>
+              <div className="mt-1">
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="new-password"
+                  required
+                  value={formData.password}
+                  onChange={handleChange}
+                  className={`appearance-none block w-full px-3 py-2 border ${
+                    errors.password
+                      ? "border-red-300 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
+                      : "border-gray-300 dark:border-gray-600 focus:ring-accent focus:border-accent"
+                  } rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm`}
+                />
+                {errors.password && (
+                  <p className="mt-2 text-sm text-red-600 dark:text-red-400">
+                    {errors.password}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? "Creating account..." : "Create account"}
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>

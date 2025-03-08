@@ -56,10 +56,10 @@ export default function RequestPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-semibold text-gray-900">
+          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
             Note Requests
           </h1>
           <button
@@ -84,7 +84,7 @@ export default function RequestPage() {
                 className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
                   selectedSubject === subject.subjectId
                     ? "bg-accent text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700"
                 }`}
               >
                 {subject.name.charAt(0).toUpperCase() + subject.name.slice(1)}
@@ -98,30 +98,30 @@ export default function RequestPage() {
           {data?.results.map((request) => (
             <div
               key={request.requestId}
-              className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow flex flex-col h-[200px]"
+              className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
                   <Book className="h-5 w-5 text-accent" />
-                  <h3 className="font-medium text-gray-900">
+                  <h3 className="font-medium text-gray-900 dark:text-white">
                     {subjectMap.get(request.subjectId)?.name}
                   </h3>
                 </div>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-gray-500 dark:text-gray-400">
                   {request.createdAt}
                 </span>
               </div>
-              <p className="mt-2 text-gray-600 line-clamp-2 overflow-y-auto flex-grow">
+              <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">
                 {request.description}
               </p>
-              <div className="mt-4 flex items-center justify-between pt-2">
+              <div className="mt-4 flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center">
                     <span className="text-xs font-medium text-accent">
                       {request.author?.substring(0, 2).toUpperCase()}
                     </span>
                   </div>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     {request.author}
                   </span>
                 </div>
@@ -129,20 +129,15 @@ export default function RequestPage() {
                   <span
                     className={`text-xs px-2 py-1 rounded-full ${
                       !request.resolved
-                        ? "bg-green-100 text-green-700"
-                        : "bg-gray-100 text-gray-700"
+                        ? "bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400"
+                        : "bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
                     }`}
                   >
                     {request.resolved ? "CLOSED" : "OPEN"}
                   </span>
                   {!request.resolved && (
                     <button
-                      onClick={() =>
-                        handleResolveClick(
-                          request?.requestId!,
-                          request?.subjectId!,
-                        )
-                      }
+                      onClick={() => handleResolveClick(request?.requestId!, request?.subjectId!)}
                       className="flex items-center justify-center h-6 w-6 rounded-full bg-accent/10 hover:bg-accent/20 transition-colors"
                       title="Resolve Request"
                     >
@@ -158,11 +153,11 @@ export default function RequestPage() {
         {/* Empty State */}
         {data?.results.length === 0 && (
           <div className="text-center py-12">
-            <MessageSquare className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <MessageSquare className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
               No requests found
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 dark:text-gray-400">
               {selectedSubject === 0
                 ? "There are no note requests yet. Be the first to make a request!"
                 : "No requests found for this subject. Try selecting a different subject or make a new request."}
@@ -172,21 +167,21 @@ export default function RequestPage() {
 
         {data?.results.length ? (
           <div className="mt-8 flex justify-center">
-            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
+            <div className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
               <button
                 onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
                 disabled={currentPage === 0}
-                className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
+                className="p-1 text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-400"
               >
                 <ChevronLeft className="h-5 w-5" />
               </button>
-              <span className="text-sm text-gray-600 min-w-[5rem] text-center">
+              <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[5rem] text-center">
                 {currentPage + 1} {data.hasMore ? "" : "/ " + (currentPage + 1)}
               </span>
               <button
                 onClick={() => setCurrentPage(currentPage + 1)}
                 disabled={!data.hasMore}
-                className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
+                className="p-1 text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-400"
               >
                 <ChevronRight className="h-5 w-5" />
               </button>
@@ -205,21 +200,10 @@ export default function RequestPage() {
                   </h2>
                   <button
                     onClick={() => setIsModalOpen(false)}
-                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>
@@ -245,21 +229,10 @@ export default function RequestPage() {
                       setIsResolveModalOpen(false);
                       setSelectedRequestId(null);
                     }}
-                    className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-6 w-6"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
                 </div>

@@ -62,145 +62,147 @@ export default function SearchComponent() {
   };
 
   return (
-    <div>
-      <form onSubmit={handleSearch} className="mb-6">
-        <div className="relative">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            placeholder="Search for notes..."
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent focus:border-accent"
-          />
-          <button
-            type="submit"
-            className="absolute right-2 top-2 p-1 bg-accent text-white rounded-md hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent"
-          >
-            <SearchIcon className="h-5 w-5" />
-          </button>
-        </div>
-      </form>
-
-      {/* Subject Filter */}
-      <div className="mb-6">
-        <div className="flex flex-wrap gap-2">
-          {filterSubjects.map((subject) => (
-            <button
-              key={subject.subjectId}
-              onClick={() => handleSubjectChange(subject.subjectId)}
-              className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
-                selectedSubject === subject.subjectId
-                  ? "bg-accent text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              {subject.name.charAt(0).toUpperCase() + subject.name.slice(1)}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        {isLoading ? (
-          <p className="text-center text-gray-500">Loading...</p>
-        ) : error ? (
-          <p className="text-center text-red-500">
-            Error: {(error as Error).message}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            Search Notes
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Search for notes by keyword or browse by subject
           </p>
-        ) : data && data.results.length > 0 ? (
-          <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {data.results.map((note: Note) => (
-              <Link
-                href={`/notes/${note.noteId}`}
-                key={note.noteId}
-                className="block"
+        </div>
+
+        <div className="mb-8">
+          <form onSubmit={handleSearch} className="flex items-stretch gap-2">
+            <div className="relative flex-grow">
+              <input
+                type="text"
+                placeholder="Search for notes..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+                className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-accent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              />
+              <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                <SearchIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" />
+              </div>
+            </div>
+            <button
+              type="submit"
+              className="px-6 py-3 bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
+            >
+              Search
+            </button>
+          </form>
+        </div>
+
+        <div className="mb-6">
+          <div className="flex flex-wrap gap-2">
+            {filterSubjects.map((subject) => (
+              <button
+                key={subject.subjectId}
+                onClick={() => handleSubjectChange(subject.subjectId)}
+                className={`px-3 py-1.5 text-sm rounded-full transition-colors ${
+                  selectedSubject === subject.subjectId
+                    ? "bg-accent text-white"
+                    : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700"
+                }`}
               >
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow h-full flex flex-col">
-                  <div className="flex items-start justify-between mb-3">
+                {subject.name}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {isLoading && (
+          <div className="flex justify-center items-center py-12">
+            <div className="loader h-8 w-8 rounded-full border-4 border-accent border-r-transparent animate-spin"></div>
+            <span className="ml-3 text-gray-600 dark:text-gray-400">Searching...</span>
+          </div>
+        )}
+
+        {!isLoading && data?.results.length === 0 && (
+          <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+            <MessageSquare className="h-12 w-12 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-1">No results found</h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              Try adjusting your search terms or filters
+            </p>
+          </div>
+        )}
+
+        {error && (
+          <div className="text-center py-8">
+            <p className="text-red-500">
+              An error occurred while fetching results. Please try again.
+            </p>
+          </div>
+        )}
+
+        {!isLoading && data && data.results.length > 0 && (
+          <>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {data.results.map((note: any) => (
+                <Link
+                  href={`/notes/${note.noteId}`}
+                  key={note.noteId}
+                  className="block bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow"
+                >
+                  <div className="flex items-start justify-between">
                     <div className="flex items-center gap-2">
                       <Book className="h-5 w-5 text-accent" />
-                      <h3 className="font-medium text-gray-900">
+                      <h3 className="font-medium text-gray-900 dark:text-white">
                         {note.subjectName || "Unknown Subject"}
                       </h3>
                     </div>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">
+                      {note.createdAt || ""}
+                    </span>
                   </div>
-                  <h2 className="text-lg font-semibold text-gray-900 mb-2">
-                    {note.title}
-                  </h2>
-
-                  {/* Enhanced Author Section */}
-                  {note.author && (
-                    <div className="mt-4 pt-3 border-t border-gray-100">
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className="h-8 w-8 rounded-full bg-accent/10 flex items-center justify-center">
-                            <span className="text-xs font-medium text-accent">
-                              {note.author.substring(0, 2).toUpperCase()}
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium text-gray-900">
-                              {note.author}
-                            </span>
-                          </div>
-                        </div>
-                        <span className="text-xs px-2 py-1 bg-accent/10 text-accent rounded-full">
-                          {note.subjectName || "Note"}
-                        </span>
-                      </div>
-                    </div>
+                  <h2 className="mt-2 font-semibold text-gray-900 dark:text-white">{note.title}</h2>
+                  {note.description && (
+                    <p className="mt-2 text-gray-600 dark:text-gray-300 line-clamp-2">
+                      {note.description}
+                    </p>
                   )}
-                </div>
-              </Link>
-            ))}
-          </div>
-        ) : debouncedSearchTerm !== "" ? (
-          <div className="text-center py-12 bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-            <MessageSquare className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-gray-900 mb-3">
-              No notes found
-            </h3>
-            <p className="text-gray-600 max-w-md mx-auto">
-              {selectedSubject === 0
-                ? "No notes match your search query. Try different keywords or check your spelling."
-                : `No notes found for this subject with this search query. Try selecting a different subject or changing your search terms.`}
-            </p>
-            <button
-              onClick={() => {
-                setSearchTerm("");
-                setSelectedSubject(0);
-              }}
-              className="mt-4 px-4 py-2 bg-accent/10 text-accent rounded-full hover:bg-accent/20 transition-colors"
-            >
-              Clear filters
-            </button>
-          </div>
-        ) : null}
-      </div>
+                  <div className="mt-4 flex items-center gap-2">
+                    <div className="h-6 w-6 rounded-full bg-accent/10 flex items-center justify-center">
+                      <span className="text-xs font-medium text-accent">
+                        {note.author?.substring(0, 2).toUpperCase()}
+                      </span>
+                    </div>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      {note.author}
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
 
-      {data?.results.length ? (
-        <div className="mt-8 flex justify-center">
-          <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
-            <button
-              onClick={() => setPageNo(Math.max(0, pageNo - 1))}
-              disabled={pageNo === 0}
-              className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <span className="text-sm text-gray-600 min-w-[5rem] text-center">
-              {pageNo + 1} {data.hasMore ? "" : "/ " + (pageNo + 1)}
-            </span>
-            <button
-              onClick={() => setPageNo(pageNo + 1)}
-              disabled={!data.hasMore}
-              className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
-          </div>
-        </div>
-      ) : null}
+            <div className="mt-8 flex justify-center">
+              <div className="flex items-center gap-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
+                <button
+                  onClick={() => setPageNo(Math.max(0, pageNo - 1))}
+                  disabled={pageNo === 0}
+                  className="p-1 text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-400"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </button>
+                <span className="text-sm text-gray-600 dark:text-gray-400 min-w-[5rem] text-center">
+                  Page {pageNo + 1}
+                </span>
+                <button
+                  onClick={() => setPageNo(pageNo + 1)}
+                  disabled={!data.hasMore}
+                  className="p-1 text-gray-600 dark:text-gray-400 hover:text-accent dark:hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600 dark:disabled:hover:text-gray-400"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

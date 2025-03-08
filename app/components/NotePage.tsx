@@ -40,8 +40,8 @@ export default function NotePage({ noteId }: { noteId: number }) {
       className={`flex-1 flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-medium transition-all duration-200
         ${
           activeTab === tab
-            ? "text-accent border-b-2 border-accent bg-accent/5"
-            : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+            ? "text-accent border-b-2 border-accent bg-accent/5 dark:bg-accent/10"
+            : "text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-50 dark:hover:text-gray-300 dark:hover:bg-gray-800"
         }`}
     >
       <Icon className="h-4 w-4" />
@@ -50,7 +50,7 @@ export default function NotePage({ noteId }: { noteId: number }) {
   );
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
           <div className="flex flex-col space-y-6">
@@ -58,15 +58,24 @@ export default function NotePage({ noteId }: { noteId: number }) {
             <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0">
               {/* PDF Viewer */}
               <div className="w-full lg:w-2/3">
-                <div className="bg-white shadow-xl rounded-lg overflow-hidden h-[calc(100vh-12rem)]">
-                  <PDFViewer url={note?.url!} />
+                <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden h-[calc(100vh-12rem)] border border-gray-100 dark:border-gray-700">
+                  {note?.url ? (
+                    <iframe
+                      src={note.url}
+                      className="w-full h-full border-0"
+                    ></iframe>
+                  ) : (
+                    <div className="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-800">
+                      <p className="text-gray-500 dark:text-gray-400">Loading PDF...</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
               {/* Chat and Comments Section */}
               <div className="w-full lg:w-1/3 flex flex-col h-[calc(100vh-12rem)]">
                 {/* Mobile Tabs */}
-                <div className="lg:hidden flex border-b border-gray-200 bg-white rounded-t-lg">
+                <div className="lg:hidden flex border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-t-lg">
                   <TabButton tab="chat" label="Chat" icon={MessageCircle} />
                   <TabButton
                     tab="comments"
@@ -76,10 +85,10 @@ export default function NotePage({ noteId }: { noteId: number }) {
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 bg-white shadow-xl rounded-lg lg:rounded-lg overflow-hidden">
+                <div className="flex-1 bg-white dark:bg-gray-800 shadow-xl rounded-lg lg:rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
                   {/* Desktop View - Always show Chat */}
                   <div className="hidden lg:block h-full">
-                    <ChatComponent noteId={noteId} noteUrl={note?.url} />
+                    <ChatComponent noteId={noteId} noteUrl={note?.url || ''} />
                   </div>
 
                   {/* Mobile View - Show based on active tab */}
@@ -91,7 +100,7 @@ export default function NotePage({ noteId }: { noteId: number }) {
                           : "translate-x-full opacity-0 hidden"
                       }`}
                     >
-                      <ChatComponent noteId={noteId} noteUrl={note?.url} />
+                      <ChatComponent noteId={noteId} noteUrl={note?.url || ''} />
                     </div>
                     <div
                       className={`h-full flex flex-col transition-all duration-300 transform ${
@@ -111,7 +120,7 @@ export default function NotePage({ noteId }: { noteId: number }) {
 
             {/* Desktop Comments Section */}
             <div className="hidden lg:block w-full">
-              <div className="bg-white shadow-xl rounded-lg overflow-hidden">
+              <div className="bg-white dark:bg-gray-800 shadow-xl rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
                 <CommentSection noteId={noteId} />
               </div>
             </div>

@@ -46,7 +46,7 @@ const CommentComponent = memo(function CommentComponent({
   return (
     <div
       className={`group flex gap-3 ${
-        isReply ? "ml-8 mt-3 pt-3 border-t border-gray-100" : "mb-4"
+        isReply ? "ml-8 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700" : "mb-4"
       } ${!isReply ? "animate-in fade-in duration-300" : ""}`}
     >
       <div className="flex-shrink-0">
@@ -56,15 +56,15 @@ const CommentComponent = memo(function CommentComponent({
       </div>
       <div className="flex-grow min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <h3 className="text-sm font-medium text-gray-900">
+          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
             {comment.author}
           </h3>
-          <span className="text-xs text-gray-400">•</span>
-          <span className="text-xs text-gray-500">
+          <span className="text-xs text-gray-400 dark:text-gray-500">•</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
             {comment.createdAt || "Just now"}
           </span>
         </div>
-        <div className="prose prose-sm max-w-none text-gray-600">
+        <div className="prose prose-sm max-w-none text-gray-600 dark:text-gray-300">
           <p className="whitespace-pre-wrap break-words">{comment.content}</p>
         </div>
         {!isReply && (
@@ -74,7 +74,7 @@ const CommentComponent = memo(function CommentComponent({
                 commentRef.current?.focus();
                 setParentId(comment.commentId);
               }}
-              className="text-xs font-medium text-gray-500 hover:text-accent flex items-center gap-1 transition-colors"
+              className="text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-accent dark:hover:text-accent flex items-center gap-1 transition-colors"
             >
               <MessageSquare className="h-3 w-3" />
               Reply
@@ -85,7 +85,7 @@ const CommentComponent = memo(function CommentComponent({
       {isAuthor && (
         <button
           onClick={() => onDeleteClick(comment.commentId!)}
-          className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 w-6 h-6 flex items-center justify-center"
+          className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 w-6 h-6 flex items-center justify-center"
           title="Delete comment"
         >
           <Trash2 className="h-4 w-4" />
@@ -103,7 +103,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
   const [parentId, setParentId] = useState<number | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-
+  
   // Delete confirmation state
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
@@ -164,9 +164,9 @@ export default function CommentSection({ noteId }: { noteId: number }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
       <div className="p-4 sm:p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
           <MessageSquare className="h-5 w-5 text-accent" />
           Comments
         </h2>
@@ -182,13 +182,24 @@ export default function CommentSection({ noteId }: { noteId: number }) {
                 </div>
               </div>
               <div className="flex-grow relative">
+                {parentId && (
+                  <div className="flex items-center gap-2 mb-2 px-1">
+                    <button
+                      onClick={() => setParentId(undefined)}
+                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-full transition-colors"
+                    >
+                      <span className="text-accent">×</span>
+                      Cancel reply
+                    </button>
+                  </div>
+                )}
                 <textarea
                   placeholder={
                     parentId ? "Write a reply..." : "Add a comment..."
                   }
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
-                  className="w-full px-3 py-2 bg-gray-50 border-none rounded-lg focus:ring-1 focus:ring-accent text-sm resize-none min-h-[80px]"
+                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border-none rounded-lg focus:ring-1 focus:ring-accent text-sm text-gray-700 dark:text-gray-200 resize-none min-h-[80px] placeholder:text-gray-500 dark:placeholder:text-gray-400"
                   rows={3}
                   ref={commentTextAreaRef}
                 />
@@ -208,8 +219,8 @@ export default function CommentSection({ noteId }: { noteId: number }) {
         <div className="space-y-4">
           {visibleComments.length === 0 ? (
             <div className="text-center py-8">
-              <MessageSquare className="h-12 w-12 text-gray-200 mx-auto mb-3" />
-              <p className="text-gray-500">
+              <MessageSquare className="h-12 w-12 text-gray-200 dark:text-gray-600 mx-auto mb-3" />
+              <p className="text-gray-500 dark:text-gray-400">
                 No comments yet. Be the first to comment!
               </p>
             </div>
@@ -246,15 +257,15 @@ export default function CommentSection({ noteId }: { noteId: number }) {
         {/* Pagination */}
         {comments.length > itemsPerPage && (
           <div className="flex justify-center mt-6">
-            <div className="flex items-center gap-2 bg-gray-50 px-3 py-1.5 rounded-lg">
+            <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 px-3 py-1.5 rounded-lg">
               <button
                 onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
                 disabled={currentPage === 1}
-                className="p-1 text-gray-500 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-500"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-accent dark:hover:text-accent disabled:opacity-50 disabled:hover:text-gray-500 dark:disabled:hover:text-gray-400"
               >
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <span className="text-xs text-gray-500">
+              <span className="text-xs text-gray-500 dark:text-gray-400">
                 {currentPage} / {totalPages}
               </span>
               <button
@@ -262,7 +273,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
                   setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                 }
                 disabled={currentPage === totalPages}
-                className="p-1 text-gray-500 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-500"
+                className="p-1 text-gray-500 dark:text-gray-400 hover:text-accent dark:hover:text-accent disabled:opacity-50 disabled:hover:text-gray-500 dark:disabled:hover:text-gray-400"
               >
                 <ChevronRight className="h-4 w-4" />
               </button>
@@ -272,26 +283,26 @@ export default function CommentSection({ noteId }: { noteId: number }) {
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog
-        open={isDeleteDialogOpen}
-        onOpenChange={setIsDeleteDialogOpen}
-      >
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="flex items-center gap-2">
-              <AlertTriangle className="h-5 w-5 text-red-500" />
-              Delete Comment
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              Are you sure you want to delete this comment? This action cannot
-              be undone.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
+      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+        <AlertDialogContent className="bg-white dark:bg-gray-800 border-0 max-w-md p-0 overflow-hidden shadow-lg">
+          <div className="p-5">
+            <AlertDialogHeader className="space-y-3">
+              <AlertDialogTitle className="text-lg font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+                Delete Comment
+              </AlertDialogTitle>
+              <AlertDialogDescription className="text-sm text-gray-500 dark:text-gray-400">
+                Are you sure you want to delete this comment? This action cannot be undone.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+          </div>
+          <AlertDialogFooter className="flex justify-end gap-2 p-4 border-t border-gray-100 dark:border-gray-700">
+            <AlertDialogCancel className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md">
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction 
               onClick={handleDeleteConfirm}
-              className="bg-red-500 hover:bg-red-600 text-white"
+              className="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md"
             >
               Delete
             </AlertDialogAction>
