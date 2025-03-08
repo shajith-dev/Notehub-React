@@ -33,7 +33,9 @@ export const getNote = async (noteId: number): Promise<Note> => {
   return response.data;
 };
 
-export const getUserNotes = async (page: number = 0): Promise<PagedResult<Note>> => {
+export const getUserNotes = async (
+  page: number = 0,
+): Promise<PagedResult<Note>> => {
   const response = await axios.get(`/api/notes/me?page=${page}`);
   return response.data;
 };

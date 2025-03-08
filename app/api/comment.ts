@@ -14,7 +14,12 @@ export const addComment = async (comment: Comment) => {
   return response.data;
 };
 
-export const deleteComment = async (noteId: number, commentId: number): Promise<void> => {
-  const response = await axios.delete(`/api/notes/${noteId}/comment/${commentId}`);
+export const deleteComment = async (
+  noteId: number,
+  commentId: number,
+): Promise<void> => {
+  const response = await axios.delete(
+    `/api/notes/${noteId}/comment/${commentId}`,
+  );
   return response.data;
 };

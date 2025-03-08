@@ -71,11 +71,11 @@ export default function UploadNoteForm() {
       // Here you would typically upload the file and create the note
       const formData = new FormData();
       formData.set("file", file);
-      const note  = {
+      const note = {
         title,
         subjectId,
         createdBy: user?.userId,
-      }
+      };
       formData.set("note", JSON.stringify(note));
       mutation.mutate(formData);
       // Reset form
@@ -201,9 +201,7 @@ export default function UploadNoteForm() {
           <div className="pt-2">
             <button
               type="submit"
-              disabled={
-                isLoading || !title || !file || subjectId === 0
-              }
+              disabled={isLoading || !title || !file || subjectId === 0}
               className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent transition duration-150 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Uploading..." : "Upload Note"}

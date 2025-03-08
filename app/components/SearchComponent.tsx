@@ -30,18 +30,15 @@ export default function SearchComponent() {
   });
 
   // Add "All" option to subjects
-  const filterSubjects = [
-    { subjectId: 0, name: "All" },
-    ...subjects,
-  ];
+  const filterSubjects = [{ subjectId: 0, name: "All" }, ...subjects];
 
   const { data, isLoading, error } = useQuery<PagedResult<Note>>({
     queryKey: ["searchResults", debouncedSearchTerm, pageNo, selectedSubject],
     queryFn: () => {
-      const subjectIds = selectedSubject === 0 
-        ? undefined 
-        : [selectedSubject]; // Use as number since the API expects number[]
-      return searchNotes(debouncedSearchTerm, pageNo, subjectIds) as Promise<PagedResult<Note>>;
+      const subjectIds = selectedSubject === 0 ? undefined : [selectedSubject]; // Use as number since the API expects number[]
+      return searchNotes(debouncedSearchTerm, pageNo, subjectIds) as Promise<
+        PagedResult<Note>
+      >;
     },
     enabled: true,
     staleTime: 60 * 1000,
@@ -130,7 +127,7 @@ export default function SearchComponent() {
                   <h2 className="text-lg font-semibold text-gray-900 mb-2">
                     {note.title}
                   </h2>
-                  
+
                   {/* Enhanced Author Section */}
                   {note.author && (
                     <div className="mt-4 pt-3 border-t border-gray-100">
@@ -168,7 +165,7 @@ export default function SearchComponent() {
                 ? "No notes match your search query. Try different keywords or check your spelling."
                 : `No notes found for this subject with this search query. Try selecting a different subject or changing your search terms.`}
             </p>
-            <button 
+            <button
               onClick={() => {
                 setSearchTerm("");
                 setSelectedSubject(0);

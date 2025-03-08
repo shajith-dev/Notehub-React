@@ -64,18 +64,18 @@ export default function ResolveRequestForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!file){
+    if (!file) {
       return;
     }
     setIsLoading(true);
     try {
       const formData = new FormData();
       formData.set("file", file);
-      const note  = {
+      const note = {
         title,
         subjectId,
         createdBy: user?.userId,
-      }
+      };
       formData.set("noteJson", JSON.stringify(note));
       mutation.mutate(formData);
       setTitle("");

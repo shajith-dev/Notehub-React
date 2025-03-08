@@ -2,8 +2,13 @@ import axios from "./axios";
 import { Request } from "../types/request";
 import { PagedResult } from "@/types/common";
 
-export async function getRequests(sids: number[], page: number): Promise<PagedResult<Request>> {
-  const response = await axios.get(`/api/requests?sids=${sids || ""}&page=${page || 0}`);
+export async function getRequests(
+  sids: number[],
+  page: number,
+): Promise<PagedResult<Request>> {
+  const response = await axios.get(
+    `/api/requests?sids=${sids || ""}&page=${page || 0}`,
+  );
   return response.data;
 }
 
@@ -12,17 +17,26 @@ export async function createRequest(request: Request): Promise<Request> {
   return response.data;
 }
 
-export async function resolveRequest(requestId: number, formData: FormData): Promise<Request> {
+export async function resolveRequest(
+  requestId: number,
+  formData: FormData,
+): Promise<Request> {
   const config = {
     headers: {
       "Content-Type": "multipart/form-data",
     },
   };
-  const response = await axios.post(`/api/requests/${requestId}/resolve`, formData, config);
+  const response = await axios.post(
+    `/api/requests/${requestId}/resolve`,
+    formData,
+    config,
+  );
   return response.data;
 }
 
-export async function getUserRequests(page: number = 0): Promise<PagedResult<Request>> {
+export async function getUserRequests(
+  page: number = 0,
+): Promise<PagedResult<Request>> {
   const response = await axios.get(`/api/requests/me?page=${page}`);
   return response.data;
 }

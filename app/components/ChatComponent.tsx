@@ -5,7 +5,7 @@ import { Send, User, Bot } from "lucide-react";
 import { useAuthStore } from "@/stores/store";
 import { Message } from "@/types/chat";
 import { getChatResponse } from "../api/chat";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 export default function ChatComponent({
   noteId,
@@ -19,8 +19,8 @@ export default function ChatComponent({
       id: uuidv4(),
       content:
         "Hello! I'm your AI assistant. I can help you understand the content of your notes and answer any questions you might have.",
-      role: "assistant"
-    }
+      role: "assistant",
+    },
   ]);
 
   const [newMessage, setNewMessage] = useState("");
@@ -56,27 +56,42 @@ export default function ChatComponent({
       content: newMessage,
       role: "user",
     };
-    try{
+    try {
       setMessages((prev) => [...prev, userMessage]);
       setNewMessage("");
       setIsLoading(true);
       const assistantMessage = await getChatResponse(newMessage, noteUrl);
       setMessages((prev) => [...prev, assistantMessage]);
       setIsLoading(false);
-      sessionStorage.setItem(`${user?.userId}_${noteId}`, JSON.stringify([...messages, userMessage, assistantMessage]));
+      sessionStorage.setItem(
+        `${user?.userId}_${noteId}`,
+        JSON.stringify([...messages, userMessage, assistantMessage]),
+      );
     } catch (error) {
       console.error("Error fetching chat response:", error);
-      setMessages((prev) => [...prev, {
-        id: uuidv4(),
-        content: "An error occurred while fetching the chat response. Please try again later.",
-        role: "assistant"
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: uuidv4(),
+          content:
+            "An error occurred while fetching the chat response. Please try again later.",
+          role: "assistant",
+        },
+      ]);
       setIsLoading(false);
-      sessionStorage.setItem(`${user?.userId}_${noteId}`, JSON.stringify([...messages, userMessage, {
-        id: uuidv4(),
-        content: "An error occurred while fetching the chat response. Please try again later.",
-        role: "assistant"
-      }]));
+      sessionStorage.setItem(
+        `${user?.userId}_${noteId}`,
+        JSON.stringify([
+          ...messages,
+          userMessage,
+          {
+            id: uuidv4(),
+            content:
+              "An error occurred while fetching the chat response. Please try again later.",
+            role: "assistant",
+          },
+        ]),
+      );
     }
   };
 
@@ -107,7 +122,7 @@ export default function ChatComponent({
                 }`}
               >
                 {message.role === "user" ? (
-                  <User className="h-5 w-5 text-accent"/>
+                  <User className="h-5 w-5 text-accent" />
                 ) : (
                   <Bot className="h-5 w-5 text-emerald-600" />
                 )}

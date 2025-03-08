@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useAuthStore } from "@/stores/store";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,7 +93,9 @@ export default function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <button className="focus:outline-none">
                       <Avatar>
-                        <AvatarFallback>{user.userName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                        <AvatarFallback>
+                          {user.userName.substring(0, 2).toUpperCase()}
+                        </AvatarFallback>
                       </Avatar>
                     </button>
                   </DropdownMenuTrigger>

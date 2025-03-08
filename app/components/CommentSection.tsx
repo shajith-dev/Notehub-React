@@ -40,7 +40,8 @@ const CommentComponent = memo(function CommentComponent({
   onDeleteClick: (commentId: number) => void;
 }) {
   const user = useAuthStore((store) => store.user);
-  const isAuthor = user?.userId === comment.createdBy || user?.userName === comment.author;
+  const isAuthor =
+    user?.userId === comment.createdBy || user?.userName === comment.author;
 
   return (
     <div
@@ -82,7 +83,7 @@ const CommentComponent = memo(function CommentComponent({
         )}
       </div>
       {isAuthor && (
-        <button 
+        <button
           onClick={() => onDeleteClick(comment.commentId!)}
           className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 text-gray-400 hover:text-red-500 p-1 rounded-full hover:bg-red-50 w-6 h-6 flex items-center justify-center"
           title="Delete comment"
@@ -102,7 +103,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
   const [parentId, setParentId] = useState<number | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  
+
   // Delete confirmation state
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
@@ -183,9 +184,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
               <div className="flex-grow relative">
                 <textarea
                   placeholder={
-                    parentId
-                      ? "Write a reply..."
-                      : "Add a comment..."
+                    parentId ? "Write a reply..." : "Add a comment..."
                   }
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
@@ -273,7 +272,10 @@ export default function CommentSection({ noteId }: { noteId: number }) {
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle className="flex items-center gap-2">
@@ -281,12 +283,13 @@ export default function CommentSection({ noteId }: { noteId: number }) {
               Delete Comment
             </AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete this comment? This action cannot be undone.
+              Are you sure you want to delete this comment? This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={handleDeleteConfirm}
               className="bg-red-500 hover:bg-red-600 text-white"
             >

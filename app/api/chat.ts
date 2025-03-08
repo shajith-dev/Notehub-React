@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Message } from "@/types/chat";
 import { useAuthStore } from "@/stores/store";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 const axiosInstance = axios.create({
   baseURL: "http://localhost:8000",
   timeout: 30000,
@@ -39,15 +39,18 @@ axiosInstance.interceptors.response.use(
   },
 );
 
-export const getChatResponse = async (query: string, url: string) : Promise<Message> => {
+export const getChatResponse = async (
+  query: string,
+  url: string,
+): Promise<Message> => {
   const response = await axiosInstance.post("/chat", {
     query,
     object_url: url,
   });
-  const message : Message = {
-    content : response.data.answer,
-    role : 'assistant',
-    id : uuidv4()
-  }
+  const message: Message = {
+    content: response.data.answer,
+    role: "assistant",
+    id: uuidv4(),
+  };
   return message;
 };

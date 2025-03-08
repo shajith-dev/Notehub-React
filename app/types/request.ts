@@ -1,9 +1,9 @@
 export interface Request {
   requestId?: number;
   subjectId: number;
-  title : string;
+  title: string;
   author?: string;
-  resolved:boolean;
+  resolved: boolean;
   createdAt?: string;
   description: string;
   authorId?: number;

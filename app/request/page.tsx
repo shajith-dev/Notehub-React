@@ -25,18 +25,14 @@ export default function RequestPage() {
   const [selectedRequestId, setSelectedRequestId] = useState<number | null>(
     null,
   );
-  const [resolveSubjectId, setResolveSubjectId] = useState<number | null>(
-    null,
-  );
+  const [resolveSubjectId, setResolveSubjectId] = useState<number | null>(null);
   const [selectedSubject, setSelectedSubject] = useState<number>(0);
 
   const { data, isLoading, error } = useQuery<PagedResult<Request>>({
     queryKey: ["requests", selectedSubject, currentPage],
     queryFn: () => {
-      const subjectIds = selectedSubject === 0 
-        ? undefined 
-        : [selectedSubject];
-      return getRequests(subjectIds || [], currentPage)
+      const subjectIds = selectedSubject === 0 ? undefined : [selectedSubject];
+      return getRequests(subjectIds || [], currentPage);
     },
     refetchInterval: 30 * 1000, // Refetch every 30 seconds
   });
@@ -51,10 +47,7 @@ export default function RequestPage() {
     subjectMap.set(subject.subjectId, subject);
   });
 
-  const filterSubjects = [
-    { subjectId: 0, name: "All" },
-    ...subjects,
-  ];
+  const filterSubjects = [{ subjectId: 0, name: "All" }, ...subjects];
 
   const handleResolveClick = (requestId: number, subjectId: number) => {
     setSelectedRequestId(requestId);
@@ -144,7 +137,12 @@ export default function RequestPage() {
                   </span>
                   {!request.resolved && (
                     <button
-                      onClick={() => handleResolveClick(request?.requestId!, request?.subjectId!)}
+                      onClick={() =>
+                        handleResolveClick(
+                          request?.requestId!,
+                          request?.subjectId!,
+                        )
+                      }
                       className="flex items-center justify-center h-6 w-6 rounded-full bg-accent/10 hover:bg-accent/20 transition-colors"
                       title="Resolve Request"
                     >
@@ -176,25 +174,25 @@ export default function RequestPage() {
           <div className="mt-8 flex justify-center">
             <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-lg shadow-sm border border-gray-100">
               <button
-              onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
-              disabled={currentPage === 0}
-              className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </button>
-            <span className="text-sm text-gray-600 min-w-[5rem] text-center">
-              {currentPage + 1} {data.hasMore ? "" : "/ " + (currentPage + 1)}
-            </span>
-            <button
-              onClick={() => setCurrentPage(currentPage+ 1)}
-              disabled={!data.hasMore}
-              className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
-            >
-              <ChevronRight className="h-5 w-5" />
-            </button>
+                onClick={() => setCurrentPage(Math.max(0, currentPage - 1))}
+                disabled={currentPage === 0}
+                className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+              <span className="text-sm text-gray-600 min-w-[5rem] text-center">
+                {currentPage + 1} {data.hasMore ? "" : "/ " + (currentPage + 1)}
+              </span>
+              <button
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={!data.hasMore}
+                className="p-1 text-gray-600 hover:text-accent disabled:opacity-50 disabled:hover:text-gray-600"
+              >
+                <ChevronRight className="h-5 w-5" />
+              </button>
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
 
         {/* Request Modal */}
         {isModalOpen && (
@@ -209,8 +207,19 @@ export default function RequestPage() {
                     onClick={() => setIsModalOpen(false)}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </div>
@@ -238,8 +247,19 @@ export default function RequestPage() {
                     }}
                     className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-full p-1 hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M6 18L18 6M6 6l12 12"
+                      />
                     </svg>
                   </button>
                 </div>
