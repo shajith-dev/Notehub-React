@@ -66,7 +66,9 @@ export default function NotePage({ noteId }: { noteId: number }) {
                     ></iframe>
                   ) : (
                     <div className="flex items-center justify-center h-full bg-gray-100 dark:bg-gray-800">
-                      <p className="text-gray-500 dark:text-gray-400">Loading PDF...</p>
+                      <p className="text-gray-500 dark:text-gray-400">
+                        Loading PDF...
+                      </p>
                     </div>
                   )}
                 </div>
@@ -88,7 +90,7 @@ export default function NotePage({ noteId }: { noteId: number }) {
                 <div className="flex-1 bg-white dark:bg-gray-800 shadow-xl rounded-lg lg:rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
                   {/* Desktop View - Always show Chat */}
                   <div className="hidden lg:block h-full">
-                    <ChatComponent noteId={noteId} noteUrl={note?.url || ''} />
+                    <ChatComponent noteId={noteId} noteUrl={note?.url || ""} />
                   </div>
 
                   {/* Mobile View - Show based on active tab */}
@@ -100,7 +102,10 @@ export default function NotePage({ noteId }: { noteId: number }) {
                           : "translate-x-full opacity-0 hidden"
                       }`}
                     >
-                      <ChatComponent noteId={noteId} noteUrl={note?.url || ''} />
+                      <ChatComponent
+                        noteId={noteId}
+                        noteUrl={note?.url || ""}
+                      />
                     </div>
                     <div
                       className={`h-full flex flex-col transition-all duration-300 transform ${

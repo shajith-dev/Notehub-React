@@ -90,7 +90,7 @@ export default function Navbar() {
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center sm:space-x-4">
             <ThemeToggle />
-            
+
             {user !== null ? (
               <div className="text-gray-500 dark:text-gray-300 hover:text-accent dark:hover:text-accent px-3 py-2 rounded-md text-sm font-medium">
                 <DropdownMenu>
@@ -103,13 +103,26 @@ export default function Navbar() {
                       </Avatar>
                     </button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700">
-                    <DropdownMenuLabel className="text-gray-700 dark:text-gray-300">My Account</DropdownMenuLabel>
+                  <DropdownMenuContent
+                    align="end"
+                    className="bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700"
+                  >
+                    <DropdownMenuLabel className="text-gray-700 dark:text-gray-300">
+                      My Account
+                    </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-gray-100 dark:bg-gray-700" />
                     <DropdownMenuItem asChild>
-                      <Link href="/profile" className="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-accent dark:hover:text-white">Profile</Link>
+                      <Link
+                        href="/profile"
+                        className="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-accent dark:hover:text-white"
+                      >
+                        Profile
+                      </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleSignOut} className="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-accent dark:hover:text-white">
+                    <DropdownMenuItem
+                      onClick={handleSignOut}
+                      className="cursor-pointer text-gray-700 dark:text-gray-300 hover:text-accent dark:hover:text-white"
+                    >
                       Sign Out
                     </DropdownMenuItem>
                   </DropdownMenuContent>

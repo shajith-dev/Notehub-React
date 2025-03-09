@@ -124,7 +124,9 @@ export default function ChatComponent({
                   <Bot className="h-6 w-6 mt-0.5 flex-shrink-0 text-accent" />
                 )}
                 <div className="flex-1">
-                  <p className="whitespace-pre-wrap text-sm">{message.content}</p>
+                  <p className="whitespace-pre-wrap text-sm">
+                    {message.content}
+                  </p>
                 </div>
                 {message.role === "user" && (
                   <User className="h-5 w-5 mt-0.5 flex-shrink-0 text-white" />

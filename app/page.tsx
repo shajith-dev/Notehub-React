@@ -50,15 +50,16 @@ export default function LandingPage() {
               Everything you need for better studying
             </p>
             <p className="mt-4 max-w-2xl text-xl text-gray-500 dark:text-gray-300 lg:mx-auto">
-              NoteHub provides a comprehensive platform for all your study needs.
+              NoteHub provides a comprehensive platform for all your study
+              needs.
             </p>
           </div>
 
           <div className="mt-10">
-            <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-              <div className="relative">
-                <dt>
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
+            <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-16 md:gap-y-16">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
                     <svg
                       className="h-6 w-6"
                       xmlns="http://www.w3.org/2000/svg"
@@ -74,19 +75,22 @@ export default function LandingPage() {
                       />
                     </svg>
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                </div>
+                <div className="ml-4">
+                  <p className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
                     Read Notes
                   </p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-gray-500">
-                  Access a vast library of study notes from various subjects and
-                  courses. Learn from your peers and improve your understanding.
-                </dd>
+                  <p className="mt-2 text-base text-gray-500 dark:text-gray-300">
+                    Access a vast library of study notes from various subjects
+                    and courses. Learn from your peers and improve your
+                    understanding.
+                  </p>
+                </div>
               </div>
 
-              <div className="relative">
-                <dt>
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
                     <svg
                       className="h-6 w-6"
                       xmlns="http://www.w3.org/2000/svg"
@@ -102,19 +106,22 @@ export default function LandingPage() {
                       />
                     </svg>
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                </div>
+                <div className="ml-4">
+                  <p className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
                     Upload Notes
                   </p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-gray-500">
-                  Share your knowledge with others. Upload your study notes and
-                  help fellow students while reinforcing your own understanding.
-                </dd>
+                  <p className="mt-2 text-base text-gray-500 dark:text-gray-300">
+                    Share your knowledge with others. Upload your study notes
+                    and help fellow students while reinforcing your own
+                    understanding.
+                  </p>
+                </div>
               </div>
 
-              <div className="relative">
-                <dt>
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
                     <svg
                       className="h-6 w-6"
                       xmlns="http://www.w3.org/2000/svg"
@@ -130,19 +137,21 @@ export default function LandingPage() {
                       />
                     </svg>
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                </div>
+                <div className="ml-4">
+                  <p className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
                     Request Notes
                   </p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-gray-500">
-                  Can't find what you're looking for? Request specific notes or
-                  topics and let the community help you out.
-                </dd>
+                  <p className="mt-2 text-base text-gray-500 dark:text-gray-300">
+                    Can't find what you're looking for? Request specific notes
+                    or topics and let the community help you out.
+                  </p>
+                </div>
               </div>
 
-              <div className="relative">
-                <dt>
-                  <div className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <div className="flex items-center justify-center h-12 w-12 rounded-md bg-accent text-white">
                     <svg
                       className="h-6 w-6"
                       xmlns="http://www.w3.org/2000/svg"
@@ -158,15 +167,17 @@ export default function LandingPage() {
                       />
                     </svg>
                   </div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                </div>
+                <div className="ml-4">
+                  <p className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
                     Collaborate
                   </p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-gray-500">
-                  Connect with other students, form study groups, and
-                  collaborate on note-taking projects to enhance your learning
-                  experience.
-                </dd>
+                  <p className="mt-2 text-base text-gray-500 dark:text-gray-300">
+                    Connect with other students, form study groups, and
+                    collaborate on note-taking projects to enhance your learning
+                    experience.
+                  </p>
+                </div>
               </div>
             </dl>
           </div>
@@ -174,13 +185,13 @@ export default function LandingPage() {
       </div>
 
       {/* CTA Section */}
-      <div className="bg-gray-700 dark:bg-gray-800">
+      <div className="bg-accent/10 dark:bg-gray-800">
         <div className="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+          <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white sm:text-4xl">
             <span className="block">Boost your academic performance.</span>
             <span className="block">Start using NoteHub today.</span>
           </h2>
-          <p className="mt-4 text-lg leading-6 text-gray-200">
+          <p className="mt-4 text-lg leading-6 text-gray-600 dark:text-gray-200">
             Join thousands of students who are already benefiting from shared
             knowledge and collaborative learning.
           </p>

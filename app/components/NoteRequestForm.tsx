@@ -46,7 +46,9 @@ export default function NoteRequestForm() {
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow border border-gray-100 dark:border-gray-700">
       <div className="mb-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Request a Note</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          Request a Note
+        </h2>
         <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
           Fill out the form below to request a note from the community.
         </p>

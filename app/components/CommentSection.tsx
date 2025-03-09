@@ -46,7 +46,9 @@ const CommentComponent = memo(function CommentComponent({
   return (
     <div
       className={`group flex gap-3 ${
-        isReply ? "ml-8 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700" : "mb-4"
+        isReply
+          ? "ml-8 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700"
+          : "mb-4"
       } ${!isReply ? "animate-in fade-in duration-300" : ""}`}
     >
       <div className="flex-shrink-0">
@@ -103,7 +105,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
   const [parentId, setParentId] = useState<number | undefined>();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  
+
   // Delete confirmation state
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState<number | null>(null);
@@ -283,7 +285,10 @@ export default function CommentSection({ noteId }: { noteId: number }) {
       </div>
 
       {/* Delete Confirmation Dialog */}
-      <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
+      <AlertDialog
+        open={isDeleteDialogOpen}
+        onOpenChange={setIsDeleteDialogOpen}
+      >
         <AlertDialogContent className="bg-white dark:bg-gray-800 border-0 max-w-md p-0 overflow-hidden shadow-lg">
           <div className="p-5">
             <AlertDialogHeader className="space-y-3">
@@ -292,7 +297,8 @@ export default function CommentSection({ noteId }: { noteId: number }) {
                 Delete Comment
               </AlertDialogTitle>
               <AlertDialogDescription className="text-sm text-gray-500 dark:text-gray-400">
-                Are you sure you want to delete this comment? This action cannot be undone.
+                Are you sure you want to delete this comment? This action cannot
+                be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
           </div>
@@ -300,7 +306,7 @@ export default function CommentSection({ noteId }: { noteId: number }) {
             <AlertDialogCancel className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 rounded-md">
               Cancel
             </AlertDialogCancel>
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={handleDeleteConfirm}
               className="px-4 py-2 text-sm font-medium text-white bg-red-500 hover:bg-red-600 rounded-md"
             >

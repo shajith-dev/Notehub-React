@@ -93,7 +93,9 @@ export default function UploadNoteForm() {
     <div className="max-w-2xl mx-auto">
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Upload a Note</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+            Upload a Note
+          </h2>
           <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Share your notes with the community. Please ensure your notes are
             clear and helpful.
@@ -150,7 +152,9 @@ export default function UploadNoteForm() {
               </label>
               <div
                 className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md relative ${
-                  dragActive ? "border-accent bg-accent/5 dark:bg-accent/10" : ""
+                  dragActive
+                    ? "border-accent bg-accent/5 dark:bg-accent/10"
+                    : ""
                 } transition-colors duration-150 dark:text-gray-300`}
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -179,11 +183,15 @@ export default function UploadNoteForm() {
                         </label>
                         <p className="pl-1">or drag and drop</p>
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">PDF up to 10MB</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                        PDF up to 10MB
+                      </p>
                     </>
                   ) : (
                     <div className="flex items-center justify-center space-x-2">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">{file.name}</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">
+                        {file.name}
+                      </span>
                       <button
                         type="button"
                         onClick={removeFile}

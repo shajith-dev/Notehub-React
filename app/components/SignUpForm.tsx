@@ -56,39 +56,42 @@ export default function SignUpForm() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-          Create your account
+    <div className="min-h-screen flex flex-col justify-center py-16 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="sm:mx-auto sm:w-full sm:max-w-lg">
+        <h2 className="mt-6 text-center text-4xl font-extrabold text-gray-900 dark:text-white">
+          Join NoteHub
         </h2>
-        <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
+        <p className="mt-3 text-center text-lg text-gray-600 dark:text-gray-400">
+          Create your account to unlock all features
+        </p>
+        <p className="mt-2 text-center text-base text-gray-600 dark:text-gray-400">
           Already have an account?{" "}
           <Link
             href="/signin"
-            className="font-medium text-accent hover:text-accent/90"
+            className="font-medium text-accent hover:text-accent/90 transition-colors duration-200"
           >
             Sign in
           </Link>
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow sm:rounded-lg sm:px-10 border border-gray-100 dark:border-gray-700">
+      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
+        <div className="bg-white dark:bg-gray-800 py-10 px-8 shadow-xl sm:rounded-xl border border-gray-100 dark:border-gray-700 backdrop-blur-sm">
           {mutation.isError && (
-            <div className="mb-4 p-2 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-sm rounded-md">
+            <div className="mb-6 p-3 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 text-base rounded-lg border border-red-200 dark:border-red-800">
               {(mutation.error as Error).message || "Failed to sign up"}
             </div>
           )}
 
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-8" onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor="userName"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 Username
               </label>
-              <div className="mt-1">
+              <div>
                 <input
                   id="userName"
                   name="userName"
@@ -97,11 +100,12 @@ export default function SignUpForm() {
                   required
                   value={formData.userName}
                   onChange={handleChange}
-                  className={`appearance-none block w-full px-3 py-2 border ${
+                  placeholder="Choose a username"
+                  className={`appearance-none block w-full px-4 py-3 border ${
                     errors.userName
                       ? "border-red-300 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-accent focus:border-accent"
-                  } rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm`}
+                  } rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent text-base transition-all duration-200`}
                 />
                 {errors.userName && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -114,11 +118,11 @@ export default function SignUpForm() {
             <div>
               <label
                 htmlFor="emailId"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 Email address
               </label>
-              <div className="mt-1">
+              <div>
                 <input
                   id="emailId"
                   name="emailId"
@@ -127,11 +131,12 @@ export default function SignUpForm() {
                   required
                   value={formData.emailId}
                   onChange={handleChange}
-                  className={`appearance-none block w-full px-3 py-2 border ${
+                  placeholder="you@example.com"
+                  className={`appearance-none block w-full px-4 py-3 border ${
                     errors.emailId
                       ? "border-red-300 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-accent focus:border-accent"
-                  } rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm`}
+                  } rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent text-base transition-all duration-200`}
                 />
                 {errors.emailId && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -144,11 +149,11 @@ export default function SignUpForm() {
             <div>
               <label
                 htmlFor="password"
-                className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="block text-base font-medium text-gray-700 dark:text-gray-300 mb-2"
               >
                 Password
               </label>
-              <div className="mt-1">
+              <div>
                 <input
                   id="password"
                   name="password"
@@ -157,11 +162,12 @@ export default function SignUpForm() {
                   required
                   value={formData.password}
                   onChange={handleChange}
-                  className={`appearance-none block w-full px-3 py-2 border ${
+                  placeholder="Minimum 8 characters"
+                  className={`appearance-none block w-full px-4 py-3 border ${
                     errors.password
                       ? "border-red-300 dark:border-red-700 focus:ring-red-500 focus:border-red-500"
                       : "border-gray-300 dark:border-gray-600 focus:ring-accent focus:border-accent"
-                  } rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent sm:text-sm`}
+                  } rounded-lg shadow-sm placeholder-gray-400 dark:placeholder-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-transparent text-base transition-all duration-200`}
                 />
                 {errors.password && (
                   <p className="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -175,9 +181,35 @@ export default function SignUpForm() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-md text-base font-medium text-white bg-accent hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-accent disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:translate-y-[-1px]"
               >
-                {isLoading ? "Creating account..." : "Create account"}
+                {isLoading ? (
+                  <span className="flex items-center">
+                    <svg
+                      className="animate-spin -ml-1 mr-2 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Creating account...
+                  </span>
+                ) : (
+                  "Create Account"
+                )}
               </button>
             </div>
           </form>
