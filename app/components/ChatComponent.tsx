@@ -7,6 +7,58 @@ import { Message } from "@/types/chat";
 import { getChatResponse } from "../api/chat";
 import { v4 as uuidv4 } from "uuid";
 
+// Typing indicator component with animated dots
+const TypingIndicator = () => {
+  return (
+    <>
+      {/* Animation styles for typing indicator */}
+      <style jsx>{`
+        @keyframes typingAnimation {
+          0% {
+            transform: translateY(0px);
+            opacity: 0.3;
+          }
+          50% {
+            transform: translateY(-5px);
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(0px);
+            opacity: 0.3;
+          }
+        }
+        .typing-dot {
+          animation: typingAnimation 1s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) {
+          animation-delay: 0s;
+        }
+        .typing-dot:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+        .typing-dot:nth-child(3) {
+          animation-delay: 0.4s;
+        }
+      `}</style>
+      <div className="flex justify-start">
+        <div className="px-3 py-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+          <div className="flex items-start gap-2">
+            <Bot className="h-6 w-6 mt-0.5 flex-shrink-0 text-accent" />
+            <div className="flex items-center">
+              <span className="text-xs text-gray-500 dark:text-gray-400 mr-2">AI is typing</span>
+              <div className="typing-dots flex space-x-1.5">
+                <div className="typing-dot bg-accent h-2 w-2 rounded-full"></div>
+                <div className="typing-dot bg-accent h-2 w-2 rounded-full"></div>
+                <div className="typing-dot bg-accent h-2 w-2 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 export default function ChatComponent({
   noteId,
   noteUrl,
@@ -135,6 +187,10 @@ export default function ChatComponent({
             </div>
           </div>
         ))}
+        
+        {/* Loading animation when waiting for AI response */}
+        {isLoading && <TypingIndicator />}
+        
         <div ref={messagesEndRef} />
       </div>
 
